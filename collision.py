@@ -3,8 +3,8 @@ import random
 def promah(rockethitbox, dom1, vuisota, shir):
     '''Аналогичен функции puli'''
     if rockethitbox.colliderect(dom1):
-        rockethitbox.y -= vuisota
-        rockethitbox.x = random.randint(10, shir-24)
+        rockethitbox.y -= vuisota    #возвращает хитбокс ракеты(а следовательно и её спрайт) вверх
+        rockethitbox.x = random.randint(10, shir-24) #меняет координату по x на случайную
         return 1
     else:
         return 0
