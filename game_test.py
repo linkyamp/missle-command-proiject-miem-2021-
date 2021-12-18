@@ -1,6 +1,6 @@
 import unittest
-from sums_test import promah
-from sums_test import puli
+from collision import promah
+from collision import puli
 
 import pygame
 import random
