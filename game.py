@@ -2,6 +2,8 @@ import pygame        #Цель игры - охранять город от вр�
 import sys          #За попадания очки добавляются, за пропущенные рокеты - уменьшаюся. При отрицательном счёте игра оканчивается
 import random       #мой код частично опирался на https://github.com/techwithtim/PygameForBeginners, но не имеет ни одной целиком заимствованоой строчки
 import os    #для более универсального пути к ассету(работает на любой ОС)
+from sums_test import promah
+from sums_test import puli
 pygame.font.init()    #для последующей вставки текста
 shir = 1024
 vuisota = 768     #переменные для разрешения
@@ -23,27 +25,12 @@ rocketlauncher = pygame.Rect(shir//2-25,vuisota-68,sootnosheniyakuba, sootnoshen
 speed = 15  #скорость перемещения игрока
 scores = pygame.font.SysFont("comicsans", 40)  #импортирую шрифт comicsans
 ourrocketsootnoocheniya = 100
-rockethitbox = pygame.Rect(random.randint(10, 1000), 0, 40, 40)   
+rockethitbox = pygame.Rect(random.randint(10, 1000), 0, 40, 40)
 rockethitbox1 = pygame.Rect(random.randint(10, 1000), -400, 40, 40)
 rockethitbox2 = pygame.Rect(random.randint(10, 1000), -1000, 40, 40)   #берём отрицательные координаты, чтобы ракеты появлялись с задержкой от начала игры
 rockethitbox3 = pygame.Rect(random.randint(10, 1000), -10000, 40, 40)
 rockethitbox4 = pygame.Rect(random.randint(10, 1000), -40000, 40, 40)
 
-YESTPROBITIE = pygame.USEREVENT + 1   # ивент на случай коллизии со взрывом
-NETTPROBITIYA = pygame.USEREVENT + 2  # на случай коллизии с городом
-
-def puli(ourrocket, rockethitbox):
-    '''Просчитывает коллизию двух объектов, берёт на вход два объекта класса Rect(ourrocket и rockethitbox), создаёт ивент в случаи их столкновения, возвращает один из них(rockethitbox) наверх на высоту окна и со случайной координатой х'''
-    if rockethitbox.colliderect(ourrocket):
-        pygame.event.post(pygame.event.Event(YESTPROBITIE))
-        rockethitbox.y -= vuisota
-        rockethitbox.x = random.randint(10, shir-24)
-def promah(rockethitbox, dom1):
-    '''Аналогичен функции puli, но постит другой ивент '''
-    if rockethitbox.colliderect(dom1):
-        pygame.event.post(pygame.event.Event(NETTPROBITIYA))
-        rockethitbox.y -= vuisota
-        rockethitbox.x = random.randint(10, shir-24)
 def upravlenie (keys, rocketlauncher):
     '''Функция, отвечающая за управление. Берёт на вход данные с клавиш(keys), полученные с помощью pygame.key.get_pressed() и также объект класса Rect (rocketlauncher), котороый и будет перемещаться со скоростью, заданной в переменной speed '''
     if keys[pygame.K_LEFT] and rocketlauncher.x - speed > 0:  # управление - кнопки влево и вправо. второе условие нужно для того, чтобы не выходить за границы экрана
@@ -78,46 +65,41 @@ while True: #бесконечный цикл
         if event.type == pygame.KEYDOWN:   # в случаи нажатия на клавишу
             if event.key == pygame.K_q:    # если нажали на Q
                 ourrocket = pygame.Rect(rocketlauncher.x-ourrocketsootnoocheniya//2, 100, ourrocketsootnoocheniya, ourrocketsootnoocheniya)
-                puli(ourrocket, rockethitbox)
+                if puli(ourrocket, rockethitbox, vuisota, shir)==1:
+                    score+=1
+                if puli(ourrocket, rockethitbox1, vuisota, shir)==1:
+                    score+=1
+                if puli(ourrocket, rockethitbox2, vuisota, shir)==1:
+                    score+=1
+                if puli(ourrocket, rockethitbox3, vuisota, shir)==1:
+                    score+=1
+                if puli(ourrocket, rockethitbox4, vuisota, shir)==1:
+                    score+=1
             if event.key == pygame.K_w:   # если нажали на W
                 ourrocket = pygame.Rect(rocketlauncher.x-ourrocketsootnoocheniya//2, 600, ourrocketsootnoocheniya, ourrocketsootnoocheniya)
-                puli(ourrocket, rockethitbox)
-            if event.key == pygame.K_q:
-                ourrocket = pygame.Rect(rocketlauncher.x-ourrocketsootnoocheniya//2, 100, ourrocketsootnoocheniya, ourrocketsootnoocheniya)   #создаём невидимый взрыв на разных расстояниях
-                puli(ourrocket, rockethitbox1)
-            if event.key == pygame.K_w:
-                ourrocket = pygame.Rect(rocketlauncher.x-ourrocketsootnoocheniya//2, 600, ourrocketsootnoocheniya, ourrocketsootnoocheniya)
-                puli(ourrocket, rockethitbox1)
-            if event.key == pygame.K_q:
-                ourrocket = pygame.Rect(rocketlauncher.x-ourrocketsootnoocheniya//2, 100, ourrocketsootnoocheniya, ourrocketsootnoocheniya)
-                puli(ourrocket, rockethitbox2)
-            if event.key == pygame.K_w:
-                ourrocket = pygame.Rect(rocketlauncher.x-ourrocketsootnoocheniya//2, 600, ourrocketsootnoocheniya, ourrocketsootnoocheniya)
-                puli(ourrocket, rockethitbox2)
-            if event.key == pygame.K_q:
-                ourrocket = pygame.Rect(rocketlauncher.x-ourrocketsootnoocheniya//2, 100, ourrocketsootnoocheniya, ourrocketsootnoocheniya)
-                puli(ourrocket, rockethitbox3)
-            if event.key == pygame.K_w:
-                ourrocket = pygame.Rect(rocketlauncher.x-ourrocketsootnoocheniya//2, 600, ourrocketsootnoocheniya, ourrocketsootnoocheniya)
-                puli(ourrocket, rockethitbox3)
-            if event.key == pygame.K_q:
-                ourrocket = pygame.Rect(rocketlauncher.x-ourrocketsootnoocheniya//2, 100, ourrocketsootnoocheniya, ourrocketsootnoocheniya)
-                puli(ourrocket, rockethitbox4)
-            if event.key == pygame.K_w:
-                ourrocket = pygame.Rect(rocketlauncher.x-ourrocketsootnoocheniya//2, 600, ourrocketsootnoocheniya, ourrocketsootnoocheniya)
-                puli(ourrocket, rockethitbox4)
+                if puli(ourrocket, rockethitbox, vuisota, shir)==1:
+                    score+=1
+                if puli(ourrocket, rockethitbox1, vuisota, shir)==1:
+                    score+=1
+                if puli(ourrocket, rockethitbox2, vuisota, shir)==1:
+                    score+=1
+                if puli(ourrocket, rockethitbox3, vuisota, shir)==1:
+                    score+=1
+                if puli(ourrocket, rockethitbox4, vuisota, shir)==1:
+                    score+=1
 
-        if event.type == YESTPROBITIE:   #ведём подсчёт очков в зависемости от происходящих ивентов
-            score+=1
-        if event.type == NETTPROBITIYA:
-            score-=1
     keys = pygame.key.get_pressed()
     upravlenie(keys, rocketlauncher)
-    promah(rockethitbox, dom1)
-    promah(rockethitbox1, dom1)
-    promah(rockethitbox2, dom1)   #проверяем все ракеты на случай промаха соответвующей функцией
-    promah(rockethitbox3, dom1)
-    promah(rockethitbox4, dom1)
+    if promah(rockethitbox, dom1, vuisota, shir) == 1:
+        score -=1
+    if promah(rockethitbox1, dom1, vuisota, shir) == 1:
+        score -=1
+    if promah(rockethitbox2, dom1, vuisota, shir) == 1:
+        score -=1
+    if promah(rockethitbox3, dom1, vuisota, shir) == 1:
+        score -=1
+    if promah(rockethitbox4, dom1, vuisota, shir) == 1:
+        score -=1
     if score < 0 :    #выход из игры при отрицательном счёте
         screen.fill(red)
         pygame.display.flip()
@@ -125,4 +107,5 @@ while True: #бесконечный цикл
     vuvodisobrajeniya()
 
 
+pygame.quit()
 pygame.quit()
