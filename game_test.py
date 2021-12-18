@@ -9,4 +9,6 @@ import random
 
 class TestPuli(unittest.TestCase):
     def test_puli(self):
-        self.assertEqual(puli[pygame.Rect(random.randint(10, 1000), 0, 40, 40), pygame.Rect(random.randint(10, 1000), 0, 40, 40), random.randint(100, 1000), random.randint(100, 1000)], 0)
+        self.assertEqual(puli[pygame.Rect(random.randint(10, 1000), 0, 40, 40), pygame.Rect(random.randint(10, 1000), 0, 40, 40), random.randint(100, 1000), random.randint(100, 1000)], 1)
+    def test_promah(self):
+        self.assertEqual(promah[pygame.Rect(random.randint(10, 1000), 0, 40, 40), pygame.Rect(random.randint(10, 1000), 0, 40, 40), random.randint(100, 1000), random.randint(100, 1000)], 1)
