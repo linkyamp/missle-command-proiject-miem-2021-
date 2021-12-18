@@ -10,7 +10,7 @@ def promah(rockethitbox, dom1, vuisota, shir):
         return 0
 
 def puli(ourrocket, rockethitbox, vuisota, shir):
-    '''Просчитывает коллизию двух объектов, берёт на вход два объекта класса Rect(ourrocket и rockethitbox), возвращвет 1 в случаи коллизи, 0 в обратном , отправляет один из них(rockethitbox) наверх на высоту окна и со случайной координатой х'''
+    '''Просчитывает коллизию двух объектов, берёт на вход два объекта класса Rect(ourrocket и rockethitbox), возвращвет 1 в случаи коллизи, 0 в обратном , изменяет координаты (rockethitbox) по y на высоту окна и со случайной координатой х. Также для работы требует переменные (vuisota) и (shir) - высота и ширина окна соотвественно'''
     if rockethitbox.colliderect(ourrocket):
         rockethitbox.y -= vuisota
         rockethitbox.x = random.randint(10, shir-24)
