@@ -108,4 +108,3 @@ while True: #бесконечный цикл
 
 
 pygame.quit()
-pygame.quit()
